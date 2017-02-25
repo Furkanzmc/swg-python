@@ -48,7 +48,6 @@ class SwgParser:
         """
 
         for folder in self._folders:
-            print(folder)
             self.compile_folder(folder)
 
     def compile_folder(self, directory):
