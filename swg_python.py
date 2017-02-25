@@ -2,6 +2,7 @@ import json
 import yaml
 import io
 import os
+import sys
 
 
 class SwgParser:
@@ -196,9 +197,18 @@ class SwgParser:
         """
 
         if len(self._swagger_dictionary) > 0:
-            file = io.open(file_path, 'w', encoding=encoding)
+            swagger_dump = ""
             if format == 'yaml':
-                file.write(yaml.dump(self._swagger_dictionary))
+                swagger_dump = yaml.dump(self._swagger_dictionary)
             else:
-                file.write(json.dumps(self._swagger_dictionary))
-            file.close()
+                swagger_dump = json.dumps(self._swagger_dictionary, ensure_ascii=False)
+
+            if sys.version_info[0] > 2:
+                file = io.open(file_path, 'w', encoding=encoding)
+                file.write(swagger_dump)
+                file.close()
+            else:
+                import codecs
+                file = codecs.open(filename=file_path, mode='w', encoding=encoding)
+                file.write(swagger_dump)
+                file.close()
