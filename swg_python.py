@@ -43,13 +43,18 @@ class SwgParser:
         if self._folders.count(folder_path) == 0:
             self._folders.append(folder_path)
 
-    def compile(self):
+    def compile(self, output_path='', format='yaml'):
         """
-        @brief      Uses the _folders list to compile the Swagger documentation
+        @brief      Uses the _folders list to compile the Swagger documentation. If the output_path is provided after compiling the result is written and the
+        class is reset by calling the @ref reset() method.
         """
 
         for folder in self._folders:
             self.compile_folder(folder)
+
+        if len(self._folders) > 0 and len(output_path) > 0:
+            self.write_to_file(output_path, format)
+            self.reset()
 
     def compile_folder(self, directory):
         """
