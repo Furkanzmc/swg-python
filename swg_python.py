@@ -22,11 +22,7 @@ class SwgParser:
     file. For an example on how to use it, check the `example` folder. Beware, although it has valid Swagger documentation the project itself does nothing and
     doesn't work. `SwgParser` does not depend on any framework specific properties, so it can be used with any kind of project you want.
 
-    # Dependencies
-
-    `SwgParser` depends only on `PyYAML` package. And you can install it with the following command:
-
-    `pip install pyyaml`
+    `SwgParser` depends only on `PyYAML` package. And you can install it with the following command: `pip install pyyaml`
     """
 
     # This is the last end position of the swg block. This index is after the `@swg_end`
