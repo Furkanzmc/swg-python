@@ -139,10 +139,13 @@ class SwgParser:
         @brief      If the block is a path block, updates the swagger dictionary.
         """
 
+        if self.is_swg_path(block) is False:
+            return
+
         method_name = block.get('method')
         path_name = block.get('path')
         block.pop('path')
-        block = block.get(method_name)
+        block.pop('method')
 
         if self._swagger_dictionary.get('paths') is not None and self._swagger_dictionary['paths'].get(path_name) is not None:
             block = {method_name: block}
