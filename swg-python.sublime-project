@@ -15,7 +15,9 @@
 			"folder_exclude_patterns":
 			[
 				"env",
-				"__pycache__"
+				"__pycache__",
+                "dist",
+                "swg_python.egg-info"
 			]
 		}
 	],
