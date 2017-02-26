@@ -80,7 +80,12 @@ class SwgParser:
 
         self._last_swg_block_position = 0
 
-        file_content = open(file_path).read()
+        file_content = ""
+
+        if sys.version_info[0] > 2:
+            file_content = io.open(file_path, 'r', encoding='utf-8').read()
+        else:
+            file_content = codecs.open(filename=file_path, mode='w', encoding='utf-8').read()
 
         while self.has_next():
             block = self.get_swg_block(file_content)
