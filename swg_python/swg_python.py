@@ -222,3 +222,53 @@ class SwgParser:
                 file = codecs.open(filename=file_path, mode='w', encoding=encoding)
                 file.write(swagger_dump)
                 file.close()
+
+
+def command_line_compile(args=None):
+    """
+    @brief      Generate Swagger documentation.
+
+    @param      args
+                -f: Folder list, separated with space
+                -t: Output type. Default is json. Options are `json` and `yaml`
+                -o: Output full path
+
+    @return     void
+    """
+
+    if args is None:
+        args = sys.argv[1:]
+
+    folders = []
+    output = ""
+    output_type = 'json'
+    is_f_param = False
+    is_o_param = False
+    is_t_param = False
+    for arg in args:
+        if arg == '-f':
+            is_f_param = True
+            is_o_param = False
+            is_t_param = False
+        elif arg == '-o':
+            is_f_param = False
+            is_o_param = True
+            is_t_param = False
+        elif arg == '-t':
+            is_f_param = False
+            is_o_param = False
+            is_t_param = True
+        elif is_f_param:
+            folders.append(arg)
+        elif is_t_param:
+            output_type = arg
+        elif is_o_param:
+            output = arg
+            is_o_param = False
+
+    swg_parser = SwgParser()
+
+    for folder in folders:
+        swg_parser.add_folder(folder)
+
+    swg_parser.compile(output, output_type)
