@@ -31,6 +31,7 @@ class SwgParser:
     # This is the main dictionary. It will stay the same unless @ref reset() method is called
     _swagger_dictionary = {}
     _folders = []
+    _ingore_errors = False
 
     def reset(self):
         """
@@ -49,12 +50,13 @@ class SwgParser:
         if self._folders.count(folder_path) == 0:
             self._folders.append(folder_path)
 
-    def compile(self, output_path='', format='yaml'):
+    def compile(self, output_path='', format='yaml', ignore_errors=False):
         """
         @brief      Uses the _folders list to compile the Swagger documentation. If the output_path is provided after compiling the result is written and the
         class is reset by calling the @ref reset() method.
         """
 
+        self._ingore_errors = ignore_errors
         for folder in self._folders:
             self.compile_folder(folder)
 
@@ -120,7 +122,13 @@ class SwgParser:
                 self._last_swg_block_position = -1
             else:
                 block = local_content[start + len(SWG_BEGIN):end]
-                block_dict = yaml.load(block)
+                if self._ingore_errors:
+                    try:
+                        block_dict = yaml.load(block)
+                    except:
+                        pass
+                else:
+                    block_dict = yaml.load(block)
 
         return block_dict
 
