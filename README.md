@@ -18,3 +18,8 @@ doesn't work. `SwgParser` does not depend on any framework specific properties, 
 Install using `pip`
 
 `pip install swg-python`
+
+# Contributions
+
+I'm open to any improvements. This is a really primitive work right now. It works, let me assure you, but it needs more improvements to work better.
+Like a better error handling, static Swagger hosting etc.
