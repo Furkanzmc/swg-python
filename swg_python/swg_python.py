@@ -245,6 +245,7 @@ def command_line_compile(args=None):
                 -f: Folder list, separated with space
                 -t: Output type. Default is json. Options are `json` and `yaml`
                 -o: Output full path
+                -h: Print help message
 
     @return     void
     """
@@ -259,7 +260,15 @@ def command_line_compile(args=None):
     is_o_param = False
     is_t_param = False
     for arg in args:
-        if arg == '-f':
+        if arg == '-h':
+            print("""
+swg-python is a simple parser that extracts the Swagger API documentation throughout the given folders.swg-python is a framework
+    -f: Folder list, separated with space
+    -t: Output type. Default is json. Options are `json` and `yaml`
+    -o: Output full path
+    -h: Print help message
+            """)
+        elif arg == '-f':
             is_f_param = True
             is_o_param = False
             is_t_param = False
@@ -285,3 +294,6 @@ def command_line_compile(args=None):
         swg_parser.add_folder(folder)
 
     swg_parser.compile(output, output_type)
+
+
+command_line_compile(["-h"])
