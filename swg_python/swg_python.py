@@ -268,6 +268,7 @@ swg-python is a simple parser that extracts the Swagger API documentation throug
     -o: Output full path
     -h: Print help message
             """)
+            break
         elif arg == '-f':
             is_f_param = True
             is_o_param = False
@@ -294,6 +295,3 @@ swg-python is a simple parser that extracts the Swagger API documentation throug
         swg_parser.add_folder(folder)
 
     swg_parser.compile(output, output_type)
-
-
-command_line_compile(["-h"])
