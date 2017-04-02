@@ -52,6 +52,10 @@ class SwgParser:
 
     swagger_dump_yaml = ""
     swagger_dump_json = ""
+    is_preview_enabled = False
+
+    def __init__(self, enable_preview=True):
+        self.is_preview_enabled = enable_preview
 
     def reset(self):
         """
@@ -88,8 +92,11 @@ class SwgParser:
         # Now write to the js file
         dump = self.swagger_dump_json
 
-        js_content = "var SwaggerSpec = %s;" % (dump)
-        self.write_file("./static/swagger-editor-3.0.1/specification.js", js_content)
+        if self.is_preview_enabled is True:
+            real_path = os.path.realpath(__file__)
+            dir_path = os.path.dirname(real_path)
+            js_content = "var SwaggerSpec = %s;" % (dump)
+            self.write_file("%s/static/swagger-editor-3.0.1/specification.js" % (dir_path), js_content)
 
     def compile_folder(self, directory):
         """
@@ -322,7 +329,7 @@ swg-python (v%s) is a simple parser that extracts the Swagger API documentation 
             output = arg
             is_o_param = False
 
-    swg_parser = SwgParser()
+    swg_parser = SwgParser(False)
 
     for folder in folders:
         swg_parser.add_folder(folder)
