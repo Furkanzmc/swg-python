@@ -13,6 +13,10 @@ The documentation can be scattered throughout the project, `SwgParser` will walk
 file. For an example on how to use it, check the `example` folder. Beware, although it has valid Swagger documentation the project itself does nothing and
 doesn't work. `SwgParser` does not depend on any framework specific properties, so it can be used with any kind of project you want.
 
+# Swagger Preview Support
+
+With the release of 1.0.4 `swg-python` supports preview of the Swagger Specification using the official Swagger Editor 3.0.1 release.
+
 # How To Install
 
 Install using `pip`
