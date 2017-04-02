@@ -7,6 +7,9 @@ if sys.version_info[0] < 3:
     import codecs
 
 
+swg_python_version = "1.0.4"
+
+
 class SwgParser:
     """
     SwgParser is a simple parser that extracts the Swagger API documentation throughout the given folders. It works with both `Python2.7` and `Python 3.x`.
@@ -23,6 +26,20 @@ class SwgParser:
     doesn't work. `SwgParser` does not depend on any framework specific properties, so it can be used with any kind of project you want.
 
     `SwgParser` depends only on `PyYAML` package. And you can install it with the following command: `pip install pyyaml`
+
+    **Example Usage**
+
+    ```
+    swg_parser = SwgParser()
+    swg_parser.add_folder('./api')
+    swg_parser.add_folder('./project')
+    swg_parser.compile('docs/swagger.json', 'json')
+    ```
+
+    # Swagger Preview Support
+
+    With the release of 1.0.4 `swg-python` supports preview of the Swagger Specification using the official Swagger Editor 3.0.1 release.
+
     """
 
     # This is the last end position of the swg block. This index is after the `@swg_end`
@@ -33,6 +50,9 @@ class SwgParser:
     _folders = []
     _ingore_errors = False
 
+    swagger_dump_yaml = ""
+    swagger_dump_json = ""
+
     def reset(self):
         """
         @brief      Resets all the parsing information. After this is called, you need to add folders to call the @ref compile() method
@@ -40,6 +60,9 @@ class SwgParser:
         self._last_swg_block_position = 0
         self._swagger_dictionary = {}
         self._folders = []
+
+        self.swagger_dump_yaml = ""
+        self.swagger_dump_json = ""
 
     def add_folder(self, folder_path):
         """
@@ -52,8 +75,7 @@ class SwgParser:
 
     def compile(self, output_path='', format='yaml', ignore_errors=False):
         """
-        @brief      Uses the _folders list to compile the Swagger documentation. If the output_path is provided after compiling the result is written and the
-        class is reset by calling the @ref reset() method.
+        @brief      Uses the _folders list to compile the Swagger documentation. If the output_path is provided after compiling the result is written.
         """
 
         self._ingore_errors = ignore_errors
@@ -61,8 +83,13 @@ class SwgParser:
             self.compile_folder(folder)
 
         if len(self._folders) > 0 and len(output_path) > 0:
-            self.write_to_file(output_path, format)
-            self.reset()
+            self.write_spec_to_file(output_path, format)
+
+        # Now write to the js file
+        dump = self.swagger_dump_json
+
+        js_content = "var SwaggerSpec = %s;" % (dump)
+        self.write_file("./static/swagger-editor-3.0.1/specification.js", js_content)
 
     def compile_folder(self, directory):
         """
@@ -212,7 +239,7 @@ class SwgParser:
     def has_next(self):
         return self._last_swg_block_position > -1
 
-    def write_to_file(self, file_path, format='yaml', encoding='utf8'):
+    def write_spec_to_file(self, file_path, format='yaml', encoding='utf8'):
         """
         @brief      Write the generated swagger to a file. JSON and YAML formats are supported
         @param      file_path - The absolute file path
@@ -222,19 +249,25 @@ class SwgParser:
 
         if len(self._swagger_dictionary) > 0:
             swagger_dump = ""
-            if format == 'yaml':
-                swagger_dump = yaml.dump(self._swagger_dictionary)
-            else:
-                swagger_dump = json.dumps(self._swagger_dictionary, ensure_ascii=False)
+            self.swagger_dump_yaml = yaml.dump(self._swagger_dictionary)
+            self.swagger_dump_json = json.dumps(self._swagger_dictionary, ensure_ascii=False)
 
-            if sys.version_info[0] > 2:
-                file = io.open(file_path, 'w', encoding=encoding)
-                file.write(swagger_dump)
-                file.close()
+            if format == 'yaml':
+                swagger_dump = self.swagger_dump_yaml
             else:
-                file = codecs.open(filename=file_path, mode='w', encoding=encoding)
-                file.write(swagger_dump)
-                file.close()
+                swagger_dump = self.swagger_dump_json
+
+            self.write_file(file_path, swagger_dump)
+
+    def write_file(self, file_path, content, encoding='utf8'):
+        if sys.version_info[0] > 2:
+            file = io.open(file_path, 'w', encoding=encoding)
+            file.write(content)
+            file.close()
+        else:
+            file = codecs.open(filename=file_path, mode='w', encoding=encoding)
+            file.write(content)
+            file.close()
 
 
 def command_line_compile(args=None):
@@ -262,12 +295,12 @@ def command_line_compile(args=None):
     for arg in args:
         if arg == '-h':
             print("""
-swg-python is a simple parser that extracts the Swagger API documentation throughout the given folders.swg-python is a framework
+swg-python (v%s) is a simple parser that extracts the Swagger API documentation throughout the given folders.swg-python is a framework
     -f: Folder list, separated with space
     -t: Output type. Default is json. Options are `json` and `yaml`
     -o: Output full path
     -h: Print help message
-            """)
+            """ % (swg_python_version))
             break
         elif arg == '-f':
             is_f_param = True
