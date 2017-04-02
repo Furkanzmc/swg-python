@@ -1,0 +1,1 @@
+var SwaggerSpec = {"swagger":"2.0","info":{"version":"0.0.0","title":"Simple API"},"paths":{"/":{"get":{"responses":{"200":{"description":"OK"}}}}}};
