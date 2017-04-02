@@ -46,26 +46,20 @@
   <div id="swagger-editor"></div>
 
   <script src="./editor_dist/swagger-editor-bundle.js"> </script>
+  <script src="./specification.js"> </script>
   <script>
   window.onload = function() {
     // Build a system
     const editor = SwaggerEditorBundle({
       dom_id: '#swagger-editor'
-    })
+    });
 
-    window.editor = editor
+    var jsonSpec = JSON.stringify(SwaggerSpec);
+    var localStorage = window.localStorage;
 
-    var url = "https://gist.githubusercontent.com/Furkanzmc/08611ed1bb0104406ef2e3bb530cfa45/raw/d4804b3836be90f386fc7ddea7326050912c3662/arifname.yaml";
-    var xhr = new XMLHttpRequest();
-    xhr.addEventListener("readystatechange", processRequest, false);
-    xhr.open('GET', url, true);
-    xhr.send();
-
-    function processRequest(e) {
-        if (xhr.readyState == 4) {
-          window.editor.getSystem().specActions.updateSpec(xhr.responseText);
-        }
-    }
+    localStorage.setItem("swagger-editor-content", jsonSpec);
+    editor.specActions.updateJsonSpec(jsonSpec);
+    window.editor = editor;
   }
   </script>
 
