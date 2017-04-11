@@ -15,7 +15,7 @@ doesn't work. `SwgParser` does not depend on any framework specific properties, 
 
 # Swagger Preview Support
 
-With the release of 1.0.4 `swg-python` supports preview of the Swagger Specification using the official Swagger Editor 3.0.1 release.
+`swg-python` supports preview of the Swagger Specification using the official Swagger Editor 3.0.1 release.
 When you compile the Swagger Specification with the following code:
 
 ```
