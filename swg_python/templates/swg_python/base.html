@@ -1,3 +1,5 @@
+{% load staticfiles %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,14 +41,14 @@
   }
 
   </style>
-  <link href="./editor_dist/swagger-editor.css" rel="stylesheet">
+  <link href="{% static 'swg_python/swagger-editor.css' %}" rel="stylesheet">
 </head>
 
 <body>
   <div id="swagger-editor"></div>
 
-  <script src="./editor_dist/swagger-editor-bundle.js"> </script>
-  <script src="./specification.js"> </script>
+  <script src="{% static 'swg_python/swagger-editor-bundle.js' %}"> </script>
+  <script src="{% static 'swg_python/specification.js' %}"> </script>
   <script>
   window.onload = function() {
     // Build a system

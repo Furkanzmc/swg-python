@@ -96,7 +96,7 @@ class SwgParser:
             real_path = os.path.realpath(__file__)
             dir_path = os.path.dirname(real_path)
             js_content = "var SwaggerSpec = %s;" % (dump)
-            self.write_file("%s/static/swagger-editor-3.0.1/specification.js" % (dir_path), js_content)
+            self.write_file("%s/static/swg_python/specification.js" % (dir_path), js_content)
 
     def compile_folder(self, directory):
         """
