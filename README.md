@@ -16,6 +16,34 @@ doesn't work. `SwgParser` does not depend on any framework specific properties, 
 # Swagger Preview Support
 
 With the release of 1.0.4 `swg-python` supports preview of the Swagger Specification using the official Swagger Editor 3.0.1 release.
+When you compile the Swagger Specification with the following code:
+
+```
+from swg_python.parser import SwgParser
+
+swg_parser = SwgParser()
+swg_parser.add_folder('./api')
+swg_parser.add_folder('./arifname')
+swg_parser.compile('docs/swagger.json', 'json')
+```
+
+When the preview is updated you can use the following the view it in your browser.
+
+**Django**
+```
+from swg_python.views import render_swagger_view
+urlpatterns = [
+    url(r'^docs/', render_swagger_view),
+]
+```
+
+When using Django, remember to add `swg_python` to the `INSTALLED_APPS`
+
+```
+INSTALLED_APPS = [
+    'swg_python',
+]
+```
 
 # How To Install
 
