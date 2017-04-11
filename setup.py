@@ -86,7 +86,7 @@ setup(
     # pip to create the appropriate form of executable for the target platform.
     entry_points={
         'console_scripts': [
-            'swg_python = swg_python.swg_python:command_line_compile',
+            'swg_python = swg_python.parser:command_line_compile',
         ],
     },
 )
