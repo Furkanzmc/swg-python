@@ -1,6 +1,7 @@
 # Always prefer setuptools over distutils
 from setuptools import setup
 from os import path
+from swg_python import __version__ as VERSION
 
 here = path.abspath(path.dirname(__file__))
 
@@ -12,7 +13,7 @@ setup(
     # Versions should comply with PEP440.  For a discussion on single-sourcing
     # the version across setup.py and the project code, see
     # https://packaging.python.org/en/latest/single_source_version.html
-    version='1.1.0',
+    version=VERSION,
 
     description='Framework agnostic Swagger parsing library in Python',
     long_description=long_description,
@@ -79,6 +80,8 @@ setup(
     # installed, specify them here.  If using Python 2.6 or less, then these
     # have to be included in MANIFEST.in as well.
     package_data={
+        'static': 'swg_python/static *',
+        'templates': 'swg_python/templates *'
     },
 
     # To provide executable scripts, use entry points in preference to the
