@@ -86,8 +86,16 @@ class SwgParser:
         for folder in self._folders:
             self.compile_folder(folder)
 
-        if len(self._folders) > 0 and len(output_path) > 0:
-            self.write_spec_to_file(output_path, format)
+        self.generate_spec()
+        # Now write to the output_path if it's given
+        if len(output_path) > 0 and os.path.exists(output_path):
+            swagger_dump = ""
+            if format == 'yaml':
+                swagger_dump = self.swagger_dump_yaml
+            else:
+                swagger_dump = self.swagger_dump_json
+
+            self.write_file(output_path, swagger_dump)
 
         # Now write to the js file
         dump = self.swagger_dump_json
@@ -246,25 +254,15 @@ class SwgParser:
     def has_next(self):
         return self._last_swg_block_position > -1
 
-    def write_spec_to_file(self, file_path, format='yaml', encoding='utf8'):
+    def generate_spec(self):
         """
-        @brief      Write the generated swagger to a file. JSON and YAML formats are supported
-        @param      file_path - The absolute file path
-        @param      format Options are json and yaml
+        @brief      Generates the specs.
         @return     void
         """
 
         if len(self._swagger_dictionary) > 0:
-            swagger_dump = ""
             self.swagger_dump_yaml = yaml.dump(self._swagger_dictionary)
             self.swagger_dump_json = json.dumps(self._swagger_dictionary, ensure_ascii=False)
-
-            if format == 'yaml':
-                swagger_dump = self.swagger_dump_yaml
-            else:
-                swagger_dump = self.swagger_dump_json
-
-            self.write_file(file_path, swagger_dump)
 
     def write_file(self, file_path, content, encoding='utf8'):
         if sys.version_info[0] > 2:
