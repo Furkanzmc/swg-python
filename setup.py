@@ -22,7 +22,7 @@ setup(
     url='https://github.com/Furkanzmc/swg-python',
 
     # Author details
-    author='Furkan Üzümcü',
+    author='Furkan Uzumcu',
     author_email='furkanuzumcu@gmail.com',
 
     # Choose your license
